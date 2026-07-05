@@ -664,6 +664,8 @@ h1.slide-title .accent.m{ color:var(--magenta); }
 
   function goTo(i){
     i = Math.max(0, Math.min(slides.length - 1, i));
+    current = i;
+    setActive(i);
     slides[i].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
