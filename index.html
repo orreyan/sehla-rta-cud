@@ -123,18 +123,29 @@ h1.slide-title .accent.m{ color:var(--magenta); }
 .cite a{ color:var(--cyan); text-decoration:none; }
 .body-block{ display:flex; flex-direction:column; gap:var(--content-gap); min-height:0; }
 
-/* ---- CUD logo badge (injected on every slide) ---- */
-.brandbar{ position:absolute; top:clamp(14px,2.4vh,26px); right:clamp(16px,3vw,34px); display:flex; align-items:center; gap:9px; z-index:6; }
-.cud-logo{ display:flex; align-items:center; gap:8px; }
-.cud-logo .ring{
-  width:clamp(28px,3.4vw,38px); height:clamp(28px,3.4vw,38px); border-radius:50%; flex:none;
-  background:conic-gradient(from 220deg,var(--magenta),var(--cyan),var(--magenta));
-  display:flex; align-items:center; justify-content:center; box-shadow:0 0 16px rgba(34,230,255,.35);
+/* ---- CUD / RTA / Mistral logo badges (injected on every slide) ---- */
+.brandbar{ position:absolute; top:clamp(14px,2.4vh,26px); right:clamp(16px,3vw,34px); display:flex; align-items:center; gap:7px; z-index:6; }
+.orgmarks{ display:flex; align-items:center; }
+.orgmark{
+  width:clamp(24px,3vw,32px); height:clamp(24px,3vw,32px); border-radius:50%; flex:none;
+  display:flex; align-items:center; justify-content:center; margin-left:-6px;
+  font-family:var(--font-head); font-weight:700; font-size:clamp(6.5px,0.8vw,8.5px); color:#fff;
+  border:1.5px solid rgba(4,6,15,.85); box-shadow:0 0 10px rgba(0,0,0,.35);
 }
-.cud-logo .ring span{ width:78%; height:78%; border-radius:50%; background:#04060f; display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:clamp(8px,1vw,10.5px); color:#fff; }
-.cud-logo .word{ font-size:clamp(8.5px,1vw,10.5px); line-height:1.25; color:var(--muted); display:none; }
-.cud-logo .word b{ display:block; color:var(--text); font-size:clamp(9.5px,1.1vw,11.5px); }
-@media (min-width:820px){ .cud-logo .word{ display:block; } }
+.orgmark:first-child{ margin-left:0; }
+.orgmark--cud{ background:linear-gradient(145deg,#7c1f2e 0%,#a3283a 55%,#5c1522 100%); color:#ffd77a; }
+.orgmark--rta{ background:linear-gradient(145deg,#e0202f 0%,#c81628 60%,#8f0e1c 100%); }
+.orgmark--mistral{ background:linear-gradient(135deg,#ffc93c 0%,#f4832c 45%,#e6432f 80%,#c1272d 100%); color:#2a0e00; }
+.brand-word{ font-size:clamp(8.5px,1vw,10.5px); line-height:1.25; color:var(--muted); display:none; margin-left:2px; }
+.brand-word b{ display:block; color:var(--text); font-size:clamp(9.5px,1.1vw,11.5px); }
+@media (min-width:820px){ .brand-word{ display:block; } }
+
+/* ---- decorative Dubai illustrations ---- */
+.illus{ position:absolute; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+.illus svg{ width:100%; height:100%; display:block; }
+.illus-skyline{ opacity:.6; }
+.illus-skyline svg{ position:absolute; bottom:0; left:0; width:100%; height:42%; }
+.illus-network{ opacity:.16; }
 
 .slidebadge{ position:absolute; bottom:clamp(10px,2vh,20px); left:clamp(16px,4vw,34px); font-size:var(--small-size); color:var(--muted); letter-spacing:.04em; z-index:6; }
 .slidebadge b{ color:var(--text); }
@@ -304,6 +315,45 @@ h1.slide-title .accent.m{ color:var(--magenta); }
 
   <!-- 1: TITLE -->
   <section class="slide title-slide" data-title="Title">
+    <div class="illus illus-skyline" aria-hidden="true">
+      <svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff8a5c" stop-opacity=".55"/>
+            <stop offset="35%" stop-color="#ff6f8f" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#04060f" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffc857" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#ffc857" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="1200" height="260" fill="url(#skyGrad)"/>
+        <circle cx="860" cy="120" r="130" fill="url(#sunGrad)"/>
+        <g fill="#0a0f22">
+          <rect x="20" y="150" width="60" height="110"/>
+          <rect x="95" y="120" width="46" height="140"/>
+          <rect x="1090" y="140" width="58" height="120"/>
+          <rect x="1000" y="105" width="50" height="155"/>
+          <path d="M170 260 L170 150 C170 100 200 70 235 70 C270 70 300 100 300 150 L300 260 Z"/>
+          <g id="museumFuture">
+            <ellipse cx="430" cy="180" rx="58" ry="58" fill="none" stroke="#0a0f22" stroke-width="16"/>
+            <rect x="418" y="232" width="24" height="28"/>
+          </g>
+          <g id="cayanTwist">
+            <rect x="560" y="90" width="42" height="170" transform="skewX(-4)"/>
+            <rect x="560" y="90" width="42" height="14" transform="skewX(6)"/>
+            <rect x="560" y="150" width="42" height="14" transform="skewX(-8)"/>
+            <rect x="560" y="210" width="42" height="14" transform="skewX(4)"/>
+          </g>
+          <g id="burjKhalifa">
+            <polygon points="700,260 700,140 712,90 724,50 733,10 742,50 754,90 766,140 766,260"/>
+          </g>
+          <rect x="820" y="130" width="40" height="130"/>
+          <rect x="920" y="160" width="52" height="100"/>
+        </g>
+      </svg>
+    </div>
     <div class="slide-content">
       <div class="title-pill reveal" style="--d:0">RTA <b>×</b> CUD 4IR Mobility Student Challenge — Day 4 Finals</div>
       <h1 class="wordmark reveal" style="--d:1">SEHLA</h1>
@@ -433,6 +483,40 @@ h1.slide-title .accent.m{ color:var(--magenta); }
 
   <!-- 7: ARCHITECTURE -->
   <section class="slide" data-title="System Architecture">
+    <div class="illus illus-network" aria-hidden="true">
+      <svg viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#22e6ff" stroke-width="2" fill="none">
+          <line x1="0" y1="90" x2="900" y2="90"/>
+          <line x1="0" y1="230" x2="900" y2="230"/>
+          <line x1="0" y1="400" x2="900" y2="400"/>
+          <line x1="140" y1="0" x2="140" y2="500"/>
+          <line x1="380" y1="0" x2="380" y2="500"/>
+          <line x1="620" y1="0" x2="620" y2="500"/>
+          <line x1="800" y1="0" x2="800" y2="500"/>
+          <line x1="0" y1="40" x2="300" y2="500"/>
+          <line x1="600" y1="0" x2="900" y2="330"/>
+        </g>
+        <g fill="#22e6ff">
+          <circle cx="140" cy="90" r="9"/>
+          <circle cx="380" cy="90" r="6"/>
+          <circle cx="620" cy="230" r="9"/>
+          <circle cx="800" cy="400" r="6"/>
+        </g>
+        <g fill="#ff3d9a">
+          <circle cx="140" cy="400" r="7"/>
+          <circle cx="620" cy="90" r="7"/>
+        </g>
+        <g fill="#ffc857">
+          <circle cx="380" cy="230" r="10"/>
+          <circle cx="800" cy="90" r="6"/>
+        </g>
+        <g fill="#3ddc97">
+          <circle cx="140" cy="230" r="6"/>
+          <circle cx="380" cy="400" r="6"/>
+          <circle cx="620" cy="400" r="6"/>
+        </g>
+      </svg>
+    </div>
     <div class="slide-content body-block">
       <p class="eyebrow reveal" style="--d:0">Under The Hood</p>
       <h1 class="slide-title reveal" style="--d:1">System Architecture — <span class="accent">four layers</span></h1>
@@ -637,11 +721,16 @@ h1.slide-title .accent.m{ color:var(--magenta); }
   let current = 0;
   let locked = false;
 
-  // Inject CUD logo badge + slide counter into every slide
+  // Inject CUD/RTA/Mistral logo badges + slide counter into every slide
   slides.forEach((s, i) => {
     const brand = document.createElement('div');
     brand.className = 'brandbar';
-    brand.innerHTML = '<div class="cud-logo"><div class="word"><b>Canadian University Dubai</b>4IR Mobility Challenge</div><div class="ring"><span>CUD</span></div></div>';
+    brand.innerHTML = '<div class="brand-word"><b>CUD &middot; RTA &middot; Mistral AI</b>4IR Mobility Challenge</div>'
+      + '<div class="orgmarks">'
+      + '<div class="orgmark orgmark--cud" title="Canadian University Dubai"><span>CUD</span></div>'
+      + '<div class="orgmark orgmark--rta" title="Roads &amp; Transport Authority"><span>RTA</span></div>'
+      + '<div class="orgmark orgmark--mistral" title="Mistral AI"><span>M</span></div>'
+      + '</div>';
     s.appendChild(brand);
 
     const badge = document.createElement('div');
