@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sehla — AI-Powered Traffic Digital Twin | RTA × CUD Challenge</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap">
+<style>
+/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE STYLES
+   (per frontend-slides skill — do not remove)
+   =========================================== */
+html, body{ height:100%; overflow-x:hidden; }
+html{ scroll-snap-type:y mandatory; scroll-behavior:smooth; }
+.slide{
+  width:100vw; height:100vh; height:100dvh; overflow:hidden;
+  scroll-snap-align:start; display:flex; flex-direction:column; position:relative;
+}
+.slide-content{
+  flex:1; display:flex; flex-direction:column; justify-content:center;
+  max-height:100%; overflow:hidden; padding:var(--slide-padding);
+}
+:root{
+  --title-size:clamp(1.5rem,5vw,4rem);
+  --h2-size:clamp(1.25rem,3.5vw,2.5rem);
+  --h3-size:clamp(1rem,2.5vw,1.75rem);
+  --body-size:clamp(0.75rem,1.5vw,1.125rem);
+  --small-size:clamp(0.65rem,1vw,0.875rem);
+  --slide-padding:clamp(1.25rem,4vw,4.5rem);
+  --content-gap:clamp(0.5rem,2vw,2rem);
+  --element-gap:clamp(0.25rem,1vw,1rem);
+}
+.card,.container,.content-box{ max-width:min(90vw,1000px); max-height:min(80vh,700px); }
+.feature-list,.bullet-list{ gap:clamp(0.4rem,1vh,1rem); }
+.feature-list li,.bullet-list li{ font-size:var(--body-size); line-height:1.4; }
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:clamp(0.5rem,1.5vw,1rem); }
+img,.image-container{ max-width:100%; max-height:min(50vh,400px); object-fit:contain; }
+@media (max-height:700px){
+  :root{ --slide-padding:clamp(0.75rem,3vw,2rem); --content-gap:clamp(0.4rem,1.5vw,1rem); --title-size:clamp(1.25rem,4.5vw,2.5rem); --h2-size:clamp(1rem,3vw,1.75rem); }
+}
+@media (max-height:600px){
+  :root{ --slide-padding:clamp(0.5rem,2.5vw,1.5rem); --content-gap:clamp(0.3rem,1vw,0.75rem); --title-size:clamp(1.1rem,4vw,2rem); --body-size:clamp(0.7rem,1.2vw,0.95rem); }
+  .nav-dots,.keyboard-hint,.decorative{ display:none; }
+}
+@media (max-height:500px){
+  :root{ --slide-padding:clamp(0.4rem,2vw,1rem); --title-size:clamp(1rem,3.5vw,1.5rem); --h2-size:clamp(0.9rem,2.5vw,1.25rem); --body-size:clamp(0.65rem,1vw,0.85rem); }
+}
+@media (max-width:600px){
+  :root{ --title-size:clamp(1.25rem,7vw,2.5rem); }
+  .grid{ grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:0.01ms !important; transition-duration:0.2s !important; }
+  html{ scroll-behavior:auto; }
+}
+
+/* ===========================================
+   THEME: NEON CYBER
+   AI / infra / futuristic — midnight navy, cyan, magenta
+   =========================================== */
+:root{
+  --bg:#04060f;
+  --bg2:#080c1c;
+  --panel:rgba(255,255,255,.035);
+  --panel-hi:rgba(255,255,255,.06);
+  --border:rgba(34,230,255,.20);
+  --border-soft:rgba(255,255,255,.08);
+  --cyan:#22e6ff;
+  --magenta:#ff3d9a;
+  --amber:#ffc857;
+  --green:#3ddc97;
+  --red:#ff5470;
+  --text:#eaf2ff;
+  --muted:#8296c2;
+  --font-head:'Clash Display','Satoshi','Segoe UI',sans-serif;
+  --font-body:'Satoshi','Segoe UI',sans-serif;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+}
+.bg-fx{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+.bg-fx .glow{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.35; }
+.bg-fx .glow.c1{ width:46vw; height:46vw; background:var(--cyan); top:-14vw; right:-10vw; }
+.bg-fx .glow.c2{ width:38vw; height:38vw; background:var(--magenta); bottom:-12vw; left:-8vw; opacity:.22; }
+.bg-fx .grid{
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(34,230,255,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,230,255,.06) 1px, transparent 1px);
+  background-size:46px 46px;
+  mask-image:radial-gradient(circle at 50% 30%, black, transparent 78%);
+}
+.bg-fx .particle{
+  position:absolute; width:3px; height:3px; border-radius:50%; background:var(--cyan);
+  opacity:.5; animation:drift 14s ease-in-out infinite;
+  box-shadow:0 0 8px 1px var(--cyan);
+}
+@keyframes drift{
+  0%,100%{ transform:translateY(0) translateX(0); opacity:.15; }
+  50%{ transform:translateY(-26px) translateX(10px); opacity:.6; }
+}
+.slide{ z-index:1; }
+.slide > .slide-content{ position:relative; z-index:2; max-width:1360px; margin:0 auto; width:100%; }
+
+.reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; transition-delay:calc(var(--d,0) * 90ms); }
+.slide.is-visible .reveal{ opacity:1; transform:none; }
+
+.eyebrow{
+  font-family:var(--font-body); text-transform:uppercase; letter-spacing:.18em;
+  font-size:var(--small-size); font-weight:700; color:var(--amber); margin:0 0 clamp(6px,1vh,12px) 0;
+}
+h1.slide-title{
+  font-family:var(--font-head); font-size:var(--title-size); font-weight:700; line-height:1.08;
+  letter-spacing:-.01em; margin:0 0 clamp(10px,2vh,22px) 0; max-width:960px;
+}
+h1.slide-title .accent{ color:var(--cyan); }
+h1.slide-title .accent.m{ color:var(--magenta); }
+.subtle{ color:var(--muted); font-size:var(--body-size); line-height:1.6; }
+.cite{ color:var(--muted); font-size:var(--small-size); font-style:italic; margin:0; }
+.cite a{ color:var(--cyan); text-decoration:none; }
+.body-block{ display:flex; flex-direction:column; gap:var(--content-gap); min-height:0; }
+
+/* ---- CUD logo badge (injected on every slide) ---- */
+.brandbar{ position:absolute; top:clamp(14px,2.4vh,26px); right:clamp(16px,3vw,34px); display:flex; align-items:center; gap:9px; z-index:6; }
+.cud-logo{ display:flex; align-items:center; gap:8px; }
+.cud-logo .ring{
+  width:clamp(28px,3.4vw,38px); height:clamp(28px,3.4vw,38px); border-radius:50%; flex:none;
+  background:conic-gradient(from 220deg,var(--magenta),var(--cyan),var(--magenta));
+  display:flex; align-items:center; justify-content:center; box-shadow:0 0 16px rgba(34,230,255,.35);
+}
+.cud-logo .ring span{ width:78%; height:78%; border-radius:50%; background:#04060f; display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:clamp(8px,1vw,10.5px); color:#fff; }
+.cud-logo .word{ font-size:clamp(8.5px,1vw,10.5px); line-height:1.25; color:var(--muted); display:none; }
+.cud-logo .word b{ display:block; color:var(--text); font-size:clamp(9.5px,1.1vw,11.5px); }
+@media (min-width:820px){ .cud-logo .word{ display:block; } }
+
+.slidebadge{ position:absolute; bottom:clamp(10px,2vh,20px); left:clamp(16px,4vw,34px); font-size:var(--small-size); color:var(--muted); letter-spacing:.04em; z-index:6; }
+.slidebadge b{ color:var(--text); }
+
+/* ---- nav chrome ---- */
+.progress{ position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--magenta),var(--amber),var(--cyan)); z-index:30; transition:width .25s ease; }
+.nav-dots{ position:fixed; right:clamp(10px,2vw,20px); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:9px; z-index:30; }
+.nav-dots button{ width:8px; height:8px; padding:0; border-radius:50%; border:1px solid var(--border); background:transparent; cursor:pointer; transition:.2s; }
+.nav-dots button.active{ background:var(--cyan); box-shadow:0 0 8px 1px var(--cyan); transform:scale(1.3); }
+.nav{ position:fixed; bottom:clamp(10px,2vh,22px); right:clamp(16px,3vw,34px); display:flex; gap:10px; z-index:30; }
+.nav button{ background:var(--panel); border:1px solid var(--border); color:var(--text); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:.15s; backdrop-filter:blur(6px); }
+.nav button:hover{ background:var(--cyan); border-color:var(--cyan); color:#04060f; }
+
+/* ---- title slide ---- */
+.title-slide .slide-content{ justify-content:center; }
+.title-pill{ display:inline-flex; align-items:center; gap:8px; background:var(--panel); border:1px solid var(--border); padding:7px 16px; border-radius:999px; font-size:var(--small-size); color:var(--muted); margin-bottom:clamp(14px,3vh,28px); width:fit-content; }
+.title-pill b{ color:var(--amber); }
+.wordmark{ font-family:var(--font-head); font-size:clamp(2.6rem,11vw,7rem); font-weight:700; line-height:.95; letter-spacing:-.02em; margin:0; background:linear-gradient(100deg,#fff 10%,var(--cyan) 60%,var(--magenta) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.tagline{ font-size:clamp(1rem,2.2vw,1.5rem); color:var(--text); margin-top:clamp(10px,2vh,18px); font-weight:400; max-width:800px; }
+.title-meta{ margin-top:clamp(20px,4vh,44px); display:flex; gap:clamp(16px,3vw,38px); flex-wrap:wrap; }
+.title-meta div{ font-size:var(--small-size); color:var(--muted); }
+.title-meta div b{ display:block; color:var(--text); font-size:var(--body-size); margin-top:3px; font-weight:700; }
+
+/* ---- stat cards ---- */
+.stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,1.4vw,18px); }
+.stat-card{ background:linear-gradient(180deg,var(--panel),var(--panel-hi)); border:1px solid var(--border-soft); border-radius:16px; padding:clamp(12px,2vh,20px) clamp(12px,1.6vw,18px); }
+.stat-card .num{ font-family:var(--font-head); font-size:clamp(1.3rem,3vw,2.1rem); font-weight:700; color:var(--amber); line-height:1; }
+.stat-card .lbl{ margin-top:clamp(6px,1vh,10px); font-size:var(--small-size); color:var(--text); line-height:1.4; }
+.stat-card .src{ margin-top:clamp(6px,1vh,10px); font-size:clamp(.6rem,.85vw,.72rem); color:var(--muted); font-style:italic; }
+
+.callout{ background:var(--panel); border-left:3px solid var(--magenta); border-radius:10px; padding:clamp(12px,1.8vh,18px) clamp(14px,2vw,22px); font-size:var(--body-size); line-height:1.55; }
+.callout b{ color:var(--amber); }
+
+.cols2{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(12px,2vw,26px); }
+.cols3{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(10px,1.6vw,20px); }
+
+.card{ background:var(--panel); border:1px solid var(--border-soft); border-radius:14px; padding:clamp(12px,2vh,22px) clamp(14px,2vw,24px); }
+.card h3{ margin:0 0 clamp(6px,1vh,10px) 0; font-family:var(--font-head); font-weight:600; font-size:clamp(.95rem,1.6vw,1.15rem); color:var(--cyan); }
+.card h3.m{ color:var(--magenta); }
+.card ul{ margin:0; padding-left:18px; color:var(--text); font-size:var(--small-size); line-height:1.6; }
+.card p{ margin:0; font-size:var(--small-size); color:var(--text); line-height:1.6; }
+
+/* ---- flow diagrams ---- */
+.flow{ display:flex; align-items:stretch; gap:0; }
+.flow .step{ flex:1; background:var(--panel); border:1px solid var(--border-soft); border-radius:14px; padding:clamp(10px,1.8vh,18px); min-width:0; }
+.flow .step .tag{ font-size:clamp(.6rem,.85vw,.68rem); text-transform:uppercase; letter-spacing:.1em; color:var(--amber); font-weight:700; }
+.flow .step h4{ margin:clamp(6px,1vh,8px) 0; font-family:var(--font-head); font-weight:600; font-size:clamp(.85rem,1.3vw,1rem); }
+.flow .step p{ margin:0; font-size:clamp(.65rem,.95vw,.78rem); color:var(--muted); line-height:1.5; }
+.flow .step.safety{ border-color:var(--magenta); box-shadow:0 0 0 1px rgba(255,61,154,.15) inset; }
+.flow .step.safety .tag{ color:var(--magenta); }
+.flow .arrow{ flex:0 0 clamp(24px,3vw,46px); display:flex; align-items:center; justify-content:center; color:var(--cyan); font-size:clamp(16px,2vw,22px); font-weight:700; }
+.split-col{ display:flex; flex-direction:column; gap:10px; flex:1; }
+.split-col .step.win{ border-color:var(--green); } .split-col .step.win .tag{ color:var(--green); }
+.split-col .step.lose{ border-color:var(--amber); } .split-col .step.lose .tag{ color:var(--amber); }
+
+/* ---- architecture stack ---- */
+.stack{ display:flex; flex-direction:column; gap:clamp(7px,1.3vh,12px); }
+.stack .layer{ display:grid; grid-template-columns:clamp(110px,16vw,150px) 1fr; gap:clamp(10px,2vw,20px); align-items:center; background:var(--panel); border:1px solid var(--border-soft); border-radius:12px; padding:clamp(9px,1.6vh,16px) clamp(14px,2vw,22px); }
+.stack .layer .role{ font-size:clamp(.6rem,.85vw,.68rem); text-transform:uppercase; letter-spacing:.08em; color:var(--amber); font-weight:800; }
+.stack .layer .tech{ font-family:var(--font-head); font-size:clamp(.8rem,1.3vw,1rem); font-weight:600; margin-top:3px; }
+.stack .layer .desc{ font-size:clamp(.65rem,1vw,.8rem); color:var(--muted); line-height:1.5; }
+.stack .layer.brain{ border-color:var(--cyan); }
+.stack .layer.safetyL{ border-color:var(--magenta); }
+
+/* ---- demo mockup ---- */
+.mockup{ background:#020309; border:1px solid var(--border-soft); border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.45); }
+.mockup .topbar{ background:#080c1c; padding:8px 14px; display:flex; align-items:center; gap:7px; border-bottom:1px solid var(--border-soft); }
+.mockup .dot{ width:8px; height:8px; border-radius:50%; }
+.mockup .dot.r{ background:var(--red); } .mockup .dot.y{ background:var(--amber); } .mockup .dot.g{ background:var(--green); }
+.mockup .topbar .title{ margin-left:8px; font-size:clamp(.6rem,.85vw,.7rem); color:var(--muted); }
+.mockup .body{ display:grid; grid-template-columns:1.4fr 1fr; height:clamp(140px,26vh,220px); }
+.mockup .map{ position:relative; border-right:1px solid var(--border-soft);
+  background:
+    radial-gradient(circle at 30% 40%, rgba(255,61,154,.22), transparent 42%),
+    radial-gradient(circle at 70% 65%, rgba(34,230,255,.2), transparent 46%),
+    repeating-linear-gradient(0deg, #070b18 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(90deg, #070b18 0 1px, transparent 1px 30px), #04060f;
+}
+.mockup .map .pin{ position:absolute; width:9px; height:9px; border-radius:50%; background:var(--magenta); box-shadow:0 0 0 6px rgba(255,61,154,.18); }
+.mockup .map .toggle{ position:absolute; top:8px; left:8px; background:#080c1c; border:1px solid var(--border-soft); border-radius:8px; font-size:clamp(.55rem,.8vw,.65rem); padding:5px 9px; color:var(--cyan); }
+.mockup .panel{ padding:clamp(8px,1.5vh,14px); display:flex; flex-direction:column; gap:clamp(6px,1vh,10px); overflow:hidden; }
+.mockup .panel .h{ font-size:clamp(.55rem,.8vw,.65rem); text-transform:uppercase; letter-spacing:.08em; color:var(--amber); font-weight:800; }
+.mockup .bubble{ background:#080c1c; border:1px solid var(--border-soft); border-radius:8px; padding:6px 9px; font-size:clamp(.58rem,.85vw,.7rem); color:var(--text); line-height:1.4; }
+.mockup .bubble b{ color:var(--cyan); }
+.demo-steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(8px,1.4vw,14px); }
+.demo-steps .st{ background:var(--panel); border:1px solid var(--border-soft); border-radius:12px; padding:clamp(8px,1.4vh,14px); }
+.demo-steps .st .n{ font-family:var(--font-head); color:var(--magenta); font-weight:700; font-size:clamp(.75rem,1.1vw,.9rem); }
+.demo-steps .st p{ margin:5px 0 0; font-size:clamp(.6rem,.9vw,.72rem); color:var(--text); line-height:1.4; }
+
+/* ---- benchmark bars ---- */
+.barviz{ display:flex; flex-direction:column; gap:clamp(8px,1.3vh,14px); }
+.barrow{ display:grid; grid-template-columns:clamp(120px,20vw,190px) 1fr clamp(46px,6vw,64px); gap:clamp(8px,1.4vw,16px); align-items:center; }
+.barrow .lbl{ font-size:clamp(.62rem,.95vw,.78rem); font-weight:700; }
+.barrow .lbl span{ display:block; font-size:clamp(.55rem,.8vw,.65rem); color:var(--muted); font-weight:400; margin-top:1px; }
+.bar-track{ background:rgba(255,255,255,.06); border-radius:8px; height:clamp(9px,1.4vh,14px); overflow:hidden; border:1px solid var(--border-soft); }
+.bar-fill{ height:100%; border-radius:8px; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1); }
+.slide.is-visible .bar-fill{ width:var(--w); }
+.barrow .val{ font-family:var(--font-head); font-weight:700; color:var(--amber); text-align:right; font-size:clamp(.7rem,1vw,.85rem); }
+
+/* ---- business plan path ---- */
+.path{ display:flex; align-items:center; gap:0; }
+.path .stage{ flex:1; text-align:center; background:var(--panel); border:1px solid var(--border-soft); border-radius:14px; padding:clamp(12px,2vh,20px) clamp(10px,1.5vw,16px); }
+.path .stage .n{ width:clamp(24px,3vw,32px); height:clamp(24px,3vw,32px); border-radius:50%; background:var(--magenta); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto clamp(8px,1.3vh,12px) auto; font-size:clamp(.7rem,1vw,.85rem); }
+.path .stage h4{ margin:0 0 5px 0; font-family:var(--font-head); font-weight:600; font-size:clamp(.78rem,1.15vw,.95rem); }
+.path .stage p{ margin:0; font-size:clamp(.62rem,.95vw,.76rem); color:var(--muted); line-height:1.5; }
+.path .arrow{ flex:0 0 clamp(16px,2.4vw,30px); color:var(--muted); font-size:clamp(14px,1.6vw,20px); text-align:center; }
+
+/* ---- responsible AI pillars ---- */
+.pillars{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,1.8vw,20px); }
+.pillar{ display:flex; gap:clamp(8px,1.4vw,14px); align-items:flex-start; }
+.pillar .ic{ width:clamp(28px,3.6vw,38px); height:clamp(28px,3.6vw,38px); border-radius:10px; background:var(--panel-hi); border:1px solid var(--border-soft); flex:none; display:flex; align-items:center; justify-content:center; font-size:clamp(13px,1.8vw,17px); }
+.pillar h4{ margin:0 0 4px 0; font-family:var(--font-head); font-weight:600; font-size:clamp(.8rem,1.2vw,.95rem); }
+.pillar p{ margin:0; font-size:clamp(.65rem,1vw,.8rem); color:var(--muted); line-height:1.5; }
+
+/* ---- evaluation criteria ---- */
+.crit-table{ display:flex; flex-direction:column; gap:clamp(6px,1.1vh,10px); }
+.crit-row{ display:grid; grid-template-columns:clamp(150px,20vw,230px) 1fr; gap:clamp(10px,1.8vw,18px); align-items:center; background:var(--panel); border:1px solid var(--border-soft); border-radius:10px; padding:clamp(7px,1.3vh,12px) clamp(12px,1.8vw,18px); }
+.crit-row .name{ font-size:clamp(.65rem,1vw,.8rem); font-weight:800; color:var(--amber); font-family:var(--font-head); }
+.crit-row .desc{ font-size:clamp(.63rem,.95vw,.78rem); color:var(--text); line-height:1.4; }
+
+/* ---- roadmap ---- */
+.roadmap{ position:relative; padding-top:clamp(6px,1vh,10px); }
+.rline{ position:absolute; top:clamp(20px,3vh,26px); left:24px; right:24px; height:2px; background:var(--border-soft); }
+.rsteps{ display:flex; justify-content:space-between; position:relative; gap:8px; }
+.rstep{ flex:1; text-align:left; }
+.rstep .dt{ width:14px; height:14px; border-radius:50%; background:var(--bg); border:3px solid var(--cyan); margin-bottom:clamp(8px,1.6vh,14px); position:relative; z-index:1; }
+.rstep.now .dt{ border-color:var(--amber); box-shadow:0 0 0 5px rgba(255,200,87,.18); }
+.rstep h4{ margin:0 0 5px 0; font-family:var(--font-head); font-weight:600; font-size:clamp(.72rem,1.1vw,.9rem); }
+.rstep p{ margin:0; font-size:clamp(.6rem,.9vw,.74rem); color:var(--muted); line-height:1.45; }
+
+/* ---- thank you ---- */
+.ty .slide-content{ align-items:center; justify-content:center; text-align:center; }
+.ty .big{ font-family:var(--font-head); font-size:clamp(2.2rem,7vw,4.6rem); font-weight:700; margin:0; background:linear-gradient(100deg,#fff,var(--cyan)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.ty .line{ font-size:clamp(.9rem,1.8vw,1.2rem); color:var(--muted); margin-top:clamp(10px,2vh,18px); max-width:680px; }
+
+/* ---- sources ---- */
+.src-list{ columns:2; column-gap:clamp(20px,4vw,44px); font-size:clamp(.62rem,1vw,.78rem); color:var(--muted); line-height:1.85; margin:0; padding-left:16px; }
+.src-list li{ margin-bottom:5px; break-inside:avoid; }
+
+/* ---- print ---- */
+@media print{
+  html{ scroll-snap-type:none; }
+  .nav,.nav-dots,.progress{ display:none !important; }
+  .slide{ scroll-snap-align:none; page-break-after:always; }
+  .reveal{ opacity:1 !important; transform:none !important; }
+  .bar-fill{ width:var(--w) !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fx" aria-hidden="true">
+  <div class="grid"></div>
+  <div class="glow c1"></div>
+  <div class="glow c2"></div>
+  <div class="particle" style="top:12%;left:8%;animation-delay:0s"></div>
+  <div class="particle" style="top:28%;left:82%;animation-delay:2s"></div>
+  <div class="particle" style="top:64%;left:18%;animation-delay:4s"></div>
+  <div class="particle" style="top:78%;left:70%;animation-delay:1s"></div>
+  <div class="particle" style="top:44%;left:50%;animation-delay:3s"></div>
+</div>
+
+<div class="progress" id="progress" style="width:0%"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<main id="deck">
+
+  <!-- 1: TITLE -->
+  <section class="slide title-slide" data-title="Title">
+    <div class="slide-content">
+      <div class="title-pill reveal" style="--d:0">RTA <b>×</b> CUD 4IR Mobility Student Challenge — Day 4 Finals</div>
+      <h1 class="wordmark reveal" style="--d:1">SEHLA</h1>
+      <div class="tagline reveal" style="--d:2">An AI-powered traffic digital twin for Dubai — signals that react, fleets that cooperate.</div>
+      <div class="title-meta reveal" style="--d:3">
+        <div>Presenting to<b>RTA Senior Management</b></div>
+        <div>Team<b>[Team Name / Members]</b></div>
+        <div>Date<b>6 July 2026</b></div>
+        <div>Powered by<b>Mistral AI</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2: PROBLEM -->
+  <section class="slide" data-title="The Problem">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">The Problem</p>
+      <h1 class="slide-title reveal" style="--d:1">Dubai's signals are <span class="accent">fixed</span>. Dubai's traffic isn't.</h1>
+      <div class="stat-grid reveal" style="--d:2">
+        <div class="stat-card"><div class="num">72 hrs</div><div class="lbl">lost per motorist to traffic jams in 2025 — up 6.2 hrs on 2024</div><div class="src">TomTom Traffic Index, via Khaleej Times, Jan 2026</div></div>
+        <div class="stat-card"><div class="num">26.3 km/h</div><div class="lbl">average rush-hour speed in 2025, dropping to 22.6 km/h in the evening peak</div><div class="src">TomTom Traffic Index, 2025</div></div>
+        <div class="stat-card"><div class="num">4.65M</div><div class="lbl">active registered vehicles by Q3 2025, as population passed 4 million</div><div class="src">Salik data, via Khaleej Times, Jan 2026</div></div>
+        <div class="stat-card"><div class="num">45–72 hrs</div><div class="lbl">2025 congestion estimates (INRIX vs TomTom) — different methods, same worsening trend</div><div class="src">INRIX Global Traffic Scorecard / TomTom, 2025</div></div>
+      </div>
+      <div class="callout reveal" style="--d:3">The core issue: <b>fixed-schedule signals</b> can't react to sudden volume spikes, and <b>commercial fleets move independently</b> of one another — both converge on chokepoints like <b>Business Bay Crossing</b> during the 7–9am and 5–7pm peaks, which RTA itself is actively re-engineering this summer.</div>
+    </div>
+  </section>
+
+  <!-- 3: WHY NOW -->
+  <section class="slide" data-title="Why This Challenge, Why Now">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Why This Challenge, Why Now</p>
+      <h1 class="slide-title reveal" style="--d:1">RTA is already spending big. We add the <span class="accent">software layer</span>.</h1>
+      <div class="cols3 reveal" style="--d:2">
+        <div class="card"><h3>RTA invests, and it works</h3><p>McKinsey's RTA 20th-anniversary study found <b style="color:var(--amber)">Dh319B</b> in fuel &amp; time savings and <b style="color:var(--amber)">Dh156B</b> GDP contribution from Dh175B invested over 20 years.</p><p class="cite">Gulf News, "RTA turns 20," Oct 2025</p></div>
+        <div class="card"><h3>Congestion is still rising</h3><p>Even with that investment, 2025 delay figures rose year-on-year as population and vehicle counts grew — infrastructure alone isn't closing the gap fast enough.</p><p class="cite">TomTom / INRIX, 2025</p></div>
+        <div class="card"><h3>RTA already proves the model</h3><p>RTA's own July 2026 Emirates Road expansion is projected to cut peak-hour journey time by <b style="color:var(--amber)">25%</b> — a real precedent for the scale of impact software-driven changes can deliver.</p><p class="cite">Khaleej Times, 30 Jun 2026</p></div>
+      </div>
+      <div class="callout reveal" style="--d:3">RTA's 28-location summer programme was itself selected using <b>historical traffic data from intelligent transport systems and cameras</b> — the exact data streams Sehla runs on.</div>
+    </div>
+  </section>
+
+  <!-- 4: SOLUTION -->
+  <section class="slide" data-title="Our Solution">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Our Solution</p>
+      <h1 class="slide-title reveal" style="--d:1">Sehla: a software-only digital twin, <span class="accent m">two engines, one safety net</span></h1>
+      <div class="cols2 reveal" style="--d:2">
+        <div class="card"><h3>Engine 1 — Adaptive Signal Control</h3><p>Mistral AI reads live queue length and volume, and retimes signal phases as congestion builds — within RTA's hard constraints.</p></div>
+        <div class="card"><h3 class="m">Engine 2 — Fleet Routing via VCG Auction</h3><p>Commercial fleets bid for peak-hour corridor slots. Winners pay for guaranteed access; non-winners shift off-peak and receive a Salik toll credit.</p></div>
+      </div>
+      <div class="callout reveal" style="--d:3">Every AI decision passes through a <b>hard-coded, deterministic safety filter</b> before it touches a signal or a route. <b>No new sensors. No new infrastructure.</b> It runs entirely on data RTA already collects.</div>
+    </div>
+  </section>
+
+  <!-- 5: DIAGRAM SIGNAL -->
+  <section class="slide" data-title="How It Works — Adaptive Signal Control">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">How It Works — Engine 1</p>
+      <h1 class="slide-title reveal" style="--d:1">Adaptive Signal Control, <span class="accent">step by step</span></h1>
+      <div class="flow reveal" style="--d:2">
+        <div class="step"><div class="tag">Input</div><h4>Live Queue &amp; Volume</h4><p>Streamed frame-by-frame from historical RTA sandbox datasets.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="step"><div class="tag">Reasoning</div><h4>Mistral AI</h4><p>Receives the JSON traffic state and proposes a signal adjustment.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="step safety"><div class="tag">Safety Filter</div><h4>Deterministic Rules</h4><p>Checks RTA constraints — no conflicting greens, min/max phase lengths.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="step"><div class="tag">Output</div><h4>Approved Timing</h4><p>Exact, seconds-adjusted timing applied and shown live on the dashboard.</p></div>
+      </div>
+      <div class="callout reveal" style="--d:3">AI proposes. Hard-coded rules dispose. Nothing reaches the road unverified.</div>
+    </div>
+  </section>
+
+  <!-- 6: DIAGRAM AUCTION -->
+  <section class="slide" data-title="How It Works — Fleet Routing">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">How It Works — Engine 2</p>
+      <h1 class="slide-title reveal" style="--d:1">Fleet Routing via <span class="accent m">VCG Auction</span></h1>
+      <div class="flow reveal" style="--d:2">
+        <div class="step"><div class="tag">Bid</div><h4>Fleets Submit Bids</h4><p>Bids for premium peak-hour transit slots through specific corridors.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="step"><div class="tag">Allocation</div><h4>Mistral AI Scores</h4><p>Weighs bid value against live corridor capacity.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="step safety"><div class="tag">Safety Filter</div><h4>Capacity Check</h4><p>Confirms the allocation doesn't exceed corridor limits.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="split-col">
+          <div class="step win"><div class="tag">Winners</div><p style="color:var(--text)">Highest-value bids get the slot they asked for.</p></div>
+          <div class="step lose"><div class="tag">Non-Winners</div><p style="color:var(--text)">Rerouted off-peak + issued a Salik "Congestion Credit."</p></div>
+        </div>
+      </div>
+      <div class="callout reveal" style="--d:3">A new, ongoing <b>revenue stream</b> for RTA — while smaller fleets are compensated, not punished.</div>
+    </div>
+  </section>
+
+  <!-- 7: ARCHITECTURE -->
+  <section class="slide" data-title="System Architecture">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Under The Hood</p>
+      <h1 class="slide-title reveal" style="--d:1">System Architecture — <span class="accent">four layers</span></h1>
+      <div class="stack reveal" style="--d:2">
+        <div class="layer"><div><div class="role">Frontend</div><div class="tech">Next.js + OpenStreetMap / Cesium</div></div><div class="desc">Dark-mode RTA-branded dashboard — Before/After map toggle and Mistral Reasoning Panel.</div></div>
+        <div class="layer brain"><div><div class="role">The Brain</div><div class="tech">Mistral AI (mistral-large-latest)</div></div><div class="desc">Reasoning engine — outputs signal timing and fleet routing decisions. Real work, not decoration.</div></div>
+        <div class="layer safetyL"><div><div class="role">The Safety Net</div><div class="tech">Deterministic Python Filter</div></div><div class="desc">Validates every AI suggestion against hard-coded RTA rules before it is applied.</div></div>
+        <div class="layer"><div><div class="role">Backend</div><div class="tech">FastAPI (Python)</div></div><div class="desc">Simulation engine — reads historical RTA datasets frame-by-frame.</div></div>
+      </div>
+      <p class="cite reveal" style="--d:3">Sources of truth: VCG Auction Mechanism — Stanford Auction Theory · Mistral API Docs · Next.js · FastAPI.</p>
+    </div>
+  </section>
+
+  <!-- 8: DEMO -->
+  <section class="slide" data-title="Live Demo">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Live Demo</p>
+      <h1 class="slide-title reveal" style="--d:1">See it <span class="accent">reason</span>, not just react</h1>
+      <div class="mockup reveal" style="--d:2">
+        <div class="topbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="title">sehla-dashboard — Business Bay Crossing (Before / After)</div></div>
+        <div class="body">
+          <div class="map"><div class="toggle">&#9679; Before | After</div><div class="pin" style="top:45%;left:35%"></div><div class="pin" style="top:60%;left:58%"></div><div class="pin" style="top:30%;left:68%"></div></div>
+          <div class="panel">
+            <div class="h">Mistral Reasoning Panel</div>
+            <div class="bubble"><b>Signal NB-04:</b> +8s green — queue at 22 vehicles, incident-free.</div>
+            <div class="bubble"><b>Corridor 3:</b> slot allocated to Fleet #112; Fleet #087 rerouted, credit issued.</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-steps reveal" style="--d:3">
+        <div class="st"><div class="n">01</div><p>Replay historical rush-hour data for Business Bay Crossing</p></div>
+        <div class="st"><div class="n">02</div><p>Show baseline congestion under today's fixed timing</p></div>
+        <div class="st"><div class="n">03</div><p>Toggle to Sehla-optimized state — watch queues clear</p></div>
+        <div class="st"><div class="n">04</div><p>Reasoning Panel narrates every decision in plain English</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9: BENCHMARKS -->
+  <section class="slide" data-title="Global Benchmarks">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Alternative Approaches — What Works Elsewhere</p>
+      <h1 class="slide-title reveal" style="--d:1">Two proven mechanisms, <span class="accent">combined — without the capex</span></h1>
+      <div class="cols2 reveal" style="--d:2">
+        <div class="card"><h3>Pittsburgh — Surtrac (AI adaptive signals)</h3><ul><li><b>40%</b> reduction in vehicle wait time</li><li><b>25%</b> reduction in travel time</li><li><b>21%</b> reduction in emissions</li></ul><p class="cite">Smart Cities Dive; US DOT UTC Spotlight</p></div>
+        <div class="card"><h3 class="m">Singapore — Electronic Road Pricing</h3><ul><li><b>17%</b> drop in morning peak traffic, day one</li><li><b>+20%</b> average road speed increase</li><li><b>+12–20%</b> peak-period bus ridership shift</li></ul><p class="cite">Development Asia case study</p></div>
+      </div>
+      <div class="callout reveal" style="--d:3">Singapore needed a <b>city-wide gantry network</b> to price access; Sehla achieves both mechanisms <b>in software</b>, on data RTA already has.</div>
+    </div>
+  </section>
+
+  <!-- 10: BUSINESS MODEL -->
+  <section class="slide" data-title="Business Model">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Business Plan</p>
+      <h1 class="slide-title reveal" style="--d:1">Cost, revenue, and <span class="accent">low-risk implementation</span></h1>
+      <div class="cols3 reveal" style="--d:2">
+        <div class="card"><h3 class="m">Cost</h3><p>Software-only. No new sensors, signal boxes, or gantries — runs on RTA's existing data feeds.</p></div>
+        <div class="card"><h3 class="m">Revenue</h3><p>VCG auction fees from logistics fleets for guaranteed peak-hour access — a new, ongoing stream.</p></div>
+        <div class="card"><h3 class="m">Implementation</h3><p>Shadow deployment first — measure-only, zero live-control risk — before any wider commitment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11: ADOPTION PATH -->
+  <section class="slide" data-title="Adoption Path">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Adoption Path</p>
+      <h1 class="slide-title reveal" style="--d:1">From one junction to <span class="accent">city-wide</span></h1>
+      <div class="path reveal" style="--d:2">
+        <div class="stage"><div class="n">1</div><h4>Shadow Deployment</h4><p>One junction, measure only — no live control, zero operational risk.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="stage"><div class="n">2</div><h4>100-Fleet Pilot</h4><p>Partner with a logistics operator (e.g. Aramex-scale) on the auction engine.</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="stage"><div class="n">3</div><h4>City-Wide Rollout</h4><p>Full integration across RTA's adaptive signal network and auction platform.</p></div>
+      </div>
+      <div class="callout reveal" style="--d:3">Why RTA, why now: the fastest, lowest-capex path to measurable congestion relief — complementing the Dh170B national transport package already committed through 2030.</div>
+    </div>
+  </section>
+
+  <!-- 12: EXPECTED RETURNS -->
+  <section class="slide" data-title="Expected Returns">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Expected Returns</p>
+      <h1 class="slide-title reveal" style="--d:1">What comparable deployments suggest is <span class="accent">achievable</span></h1>
+      <div class="cols2 reveal" style="--d:2">
+        <div class="card">
+          <h3>Benchmark performance, comparable deployments</h3>
+          <div class="barviz">
+            <div class="barrow"><div class="lbl">Wait-time cut<span>Surtrac, Pittsburgh</span></div><div class="bar-track"><div class="bar-fill" style="--w:100%;background:var(--cyan)"></div></div><div class="val">40%</div></div>
+            <div class="barrow"><div class="lbl">Travel-time cut<span>Surtrac, Pittsburgh</span></div><div class="bar-track"><div class="bar-fill" style="--w:62%;background:var(--cyan)"></div></div><div class="val">25%</div></div>
+            <div class="barrow"><div class="lbl">Emissions cut<span>Surtrac, Pittsburgh</span></div><div class="bar-track"><div class="bar-fill" style="--w:52%;background:var(--cyan)"></div></div><div class="val">21%</div></div>
+            <div class="barrow"><div class="lbl">Avg speed gain<span>Singapore ERP</span></div><div class="bar-track"><div class="bar-fill" style="--w:50%;background:var(--magenta)"></div></div><div class="val">20%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="m">Illustrative annual value at scale</h3>
+          <div class="barviz">
+            <div class="barrow"><div class="lbl">Baseline cost<span>RTA historical estimate</span></div><div class="bar-track"><div class="bar-fill" style="--w:100%;background:var(--red)"></div></div><div class="val">Dh4.6B</div></div>
+            <div class="barrow"><div class="lbl">Savings, low case<span>20% benchmark</span></div><div class="bar-track"><div class="bar-fill" style="--w:20%;background:var(--green)"></div></div><div class="val">~Dh0.9B</div></div>
+            <div class="barrow"><div class="lbl">Savings, high case<span>40% benchmark</span></div><div class="bar-track"><div class="bar-fill" style="--w:40%;background:var(--green)"></div></div><div class="val">~Dh1.8B</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="cite reveal" style="--d:3">Benchmark-derived, illustrative projections — not yet Sehla-measured results. Baseline: RTA congestion-cost estimate as reported by regional press; ranges from Surtrac (Pittsburgh) and Singapore ERP case studies (see Sources).</p>
+    </div>
+  </section>
+
+  <!-- 13: RESPONSIBLE AI -->
+  <section class="slide" data-title="Responsible AI & Data">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Responsible AI &amp; Data Plan</p>
+      <h1 class="slide-title reveal" style="--d:1">Safe, fair, and <span class="accent">transparent</span> by design</h1>
+      <div class="pillars reveal" style="--d:2">
+        <div class="pillar"><div class="ic">&#128203;</div><div><h4>Data</h4><p>Aggregated traffic flow, volume and signal-timing data only — no personal or vehicle-owner data.</p></div></div>
+        <div class="pillar"><div class="ic">&#128737;&#65039;</div><div><h4>Safety</h4><p>AI proposes, hard-coded rules dispose. Every suggestion is checked before it can affect a road.</p></div></div>
+        <div class="pillar"><div class="ic">&#128161;</div><div><h4>Transparency</h4><p>The Reasoning Panel explains each decision's logic in plain English, in real time.</p></div></div>
+        <div class="pillar"><div class="ic">&#9878;&#65039;</div><div><h4>Fairness</h4><p>A minimum slot share is reserved for smaller operators; outcomes monitored by fleet size.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14: EVALUATION FIT -->
+  <section class="slide" data-title="Fit to Evaluation Criteria">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Why Sehla Scores Well</p>
+      <h1 class="slide-title reveal" style="--d:1">Mapped to <span class="accent">every evaluation criterion</span></h1>
+      <div class="crit-table reveal" style="--d:2">
+        <div class="crit-row"><div class="name">Relevance &amp; Impact</div><div class="desc">Directly targets named RTA chokepoints (Business Bay Crossing) with measurable delay/emissions potential.</div></div>
+        <div class="crit-row"><div class="name">AI Effectiveness</div><div class="desc">Mistral does real reasoning work — signal timing and auction allocation — not chat or decoration.</div></div>
+        <div class="crit-row"><div class="name">Feasibility</div><div class="desc">Software-only; uses data RTA already collects; phased shadow-deployment path de-risks adoption.</div></div>
+        <div class="crit-row"><div class="name">Business &amp; Marketing</div><div class="desc">Auction fees fund the platform; two-sided go-to-market with RTA operations and logistics fleets.</div></div>
+        <div class="crit-row"><div class="name">Responsible AI</div><div class="desc">Deterministic safety filter, aggregated-only data, live transparency, auction fairness safeguard.</div></div>
+        <div class="crit-row"><div class="name">Teamwork &amp; Pitch</div><div class="desc">Live dashboard and Reasoning Panel double as the demo backbone for the whole team's pitch.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15: ROADMAP -->
+  <section class="slide" data-title="Roadmap">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Roadmap</p>
+      <h1 class="slide-title reveal" style="--d:1">From <span class="accent">hackathon prototype</span> to city-wide rollout</h1>
+      <div class="roadmap reveal" style="--d:2">
+        <div class="rline"></div>
+        <div class="rsteps">
+          <div class="rstep now"><div class="dt"></div><h4>Phase 0 — Now</h4><p>Working prototype on historical RTA data; live Mistral integration; Before/After map.</p></div>
+          <div class="rstep"><div class="dt"></div><h4>Phase 1</h4><p>Shadow deployment at a single junction — measure only, verify safety.</p></div>
+          <div class="rstep"><div class="dt"></div><h4>Phase 2</h4><p>100-fleet pilot with a logistics partner on the VCG auction engine.</p></div>
+          <div class="rstep"><div class="dt"></div><h4>Phase 3</h4><p>Full integration with RTA's adaptive signal controllers and city-wide auction.</p></div>
+        </div>
+      </div>
+      <div class="callout reveal" style="--d:3">Engineering build sequence underneath: 2D SUMO simulation → 3D Cesium twin → real-data calibration → reinforcement-learning optimization → Mistral orchestration &amp; dashboard.</div>
+    </div>
+  </section>
+
+  <!-- 16: THANK YOU -->
+  <section class="slide ty" data-title="Thank You">
+    <div class="slide-content">
+      <h1 class="big reveal" style="--d:0">Sehla</h1>
+      <p class="line reveal" style="--d:1">A software upgrade to infrastructure RTA already owns — the fastest, lowest-capex path to measurable congestion relief.</p>
+      <p class="line reveal" style="--d:2; font-size:1rem;">Thank you — questions welcome.</p>
+    </div>
+  </section>
+
+  <!-- 17: SOURCES -->
+  <section class="slide" data-title="Sources (Appendix)">
+    <div class="slide-content body-block">
+      <p class="eyebrow reveal" style="--d:0">Appendix</p>
+      <h1 class="slide-title reveal" style="--d:1">Sources &amp; References</h1>
+      <ul class="src-list reveal" style="--d:2">
+        <li>Waheed Abbas, "Dubai motorists lose nearly 4 days to traffic in 2025 as congestion rises," Khaleej Times, 25 Jan 2026 — TomTom Traffic Index / INRIX data.</li>
+        <li>SM Ayaz Zakir, "Dubai RTA adds two more lanes to Emirates Road, upgrades Business Bay and 26 other locations," Khaleej Times, 30 Jun 2026.</li>
+        <li>"RTA turns 20: Dh175 billion to ease traffic congestion and mobility in Dubai," Gulf News, Oct 2025 — McKinsey &amp; Company study.</li>
+        <li>Development Asia, "The Case for Electronic Road Pricing" — Singapore ERP case study.</li>
+        <li>Smart Cities Dive, "This AI traffic system in Pittsburgh has reduced travel time by 25%."</li>
+        <li>US Department of Transportation, UTC Spotlight — "Surtrac for the People."</li>
+        <li>CUD 4IR Mobility Student Challenge — Day 1 briefing deck, RTA × Canadian University Dubai, 30 Jun 2026.</li>
+        <li>Sehla Project Description Document (team submission) — solution, business, marketing &amp; responsible-AI plans.</li>
+        <li>Sehla Development Roadmap (team submission) — engineering build phases.</li>
+        <li>Mistral API Docs · Next.js · FastAPI · VCG Auction Mechanism — Stanford University Auction Theory.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav">
+  <button id="prevBtn" title="Previous (↑)" aria-label="Previous slide">&#8593;</button>
+  <button id="fsBtn" title="Fullscreen (F)" aria-label="Toggle fullscreen">&#9974;</button>
+  <button id="nextBtn" title="Next (↓)" aria-label="Next slide">&#8595;</button>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('navDots');
+  const progress = document.getElementById('progress');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
+  let locked = false;
+
+  // Inject CUD logo badge + slide counter into every slide
+  slides.forEach((s, i) => {
+    const brand = document.createElement('div');
+    brand.className = 'brandbar';
+    brand.innerHTML = '<div class="cud-logo"><div class="word"><b>Canadian University Dubai</b>4IR Mobility Challenge</div><div class="ring"><span>CUD</span></div></div>';
+    s.appendChild(brand);
+
+    const badge = document.createElement('div');
+    badge.className = 'slidebadge';
+    badge.innerHTML = '<b>' + (i+1) + '</b> / ' + slides.length + ' &middot; ' + (s.dataset.title || '');
+    s.appendChild(badge);
+
+    const dot = document.createElement('button');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i+1) + ': ' + (s.dataset.title || ''));
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function setActive(i){
+    current = i;
+    dots.forEach((d, di) => d.classList.toggle('active', di === i));
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+  }
+
+  function goTo(i){
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  // Reveal-on-enter + active-slide tracking
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const i = slides.indexOf(entry.target);
+      if (entry.isIntersecting && entry.intersectionRatio > 0.55) {
+        entry.target.classList.add('is-visible');
+        setActive(i);
+      }
+    });
+  }, { threshold: [0, 0.55, 1] });
+  slides.forEach(s => io.observe(s));
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { goTo(current + 1); e.preventDefault(); }
+    else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { goTo(current - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { goTo(0); e.preventDefault(); }
+    else if (e.key === 'End') { goTo(slides.length - 1); e.preventDefault(); }
+    else if (e.key.toLowerCase() === 'f') { toggleFullscreen(); }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  // Mouse wheel navigation (debounced, one slide per gesture)
+  window.addEventListener('wheel', (e) => {
+    if (locked) return;
+    if (Math.abs(e.deltaY) < 12) return;
+    locked = true;
+    goTo(current + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => { locked = false; }, 650);
+  }, { passive: true });
+
+  // Touch / swipe navigation
+  let touchStartY = null;
+  window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (touchStartY === null) return;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 50) goTo(current + (dy > 0 ? 1 : -1));
+    touchStartY = null;
+  }, { passive: true });
+
+  function toggleFullscreen(){
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+    else document.exitFullscreen();
+  }
+  document.getElementById('fsBtn').addEventListener('click', toggleFullscreen);
+
+  setActive(0);
+})();
+</script>
+
+</body>
+</html>
